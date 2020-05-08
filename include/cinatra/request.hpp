@@ -533,7 +533,7 @@ namespace cinatra {
 		}
 
 		int parse_chunked(size_t bytes_transferred) {
-			auto str = std::string_view(&buf_[header_len_], bytes_transferred - header_len_);
+			//auto str = std::string_view(&buf_[header_len_], bytes_transferred - header_len_);
 
 			return -1;
 		}

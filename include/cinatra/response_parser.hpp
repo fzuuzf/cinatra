@@ -215,8 +215,8 @@ namespace cinatra {
 		}
 
 		size_t cur_size_ = 0;
-		int header_len_ = 0;
-		int body_len_ = 0;
+		std::size_t header_len_ = 0;
+		std::size_t body_len_ = 0;
 		std::string_view msg_;
 		size_t msg_len_;
 		int status_ = 0;

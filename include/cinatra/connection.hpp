@@ -464,7 +464,6 @@ namespace cinatra {
 			
 			auto& rep_str = res_.response_str();
 			int result = 0;
-            size_t left = ret;
 			bool head_not_complete = false;
 			bool body_not_complete = false;
 			size_t left_body_len = 0;
@@ -663,8 +662,8 @@ namespace cinatra {
 			else {
 				req_.expand_size();
 				assert(req_.current_size() >= req_.header_len());
-				size_t part_size = req_.current_size() - req_.header_len();
-				if (part_size == -1) {
+				std::ptrdiff_t part_size = req_.current_size() - req_.header_len();
+				if (part_size < 0) {
 					response_back(status_type::internal_server_error);
 					return;
 				}
