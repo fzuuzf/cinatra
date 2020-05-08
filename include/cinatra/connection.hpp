@@ -410,6 +410,8 @@ namespace cinatra {
 				auto type = get_content_type();
 				req_.set_http_type(type);
 				switch (type) {
+				case cinatra::content_type::websocket:
+					break;
 				case cinatra::content_type::string:
 				case cinatra::content_type::unknown:
 					handle_string_body(bytes_transferred);

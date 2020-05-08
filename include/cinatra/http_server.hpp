@@ -317,6 +317,10 @@ namespace cinatra {
 
 				auto state = req.get_state();
 				switch (state) {
+					case cinatra::data_proc_state::data_all_end:
+					case cinatra::data_proc_state::data_close:
+						break;
+
 					case cinatra::data_proc_state::data_begin:
 					{
 						std::string relative_file_name = req.get_relative_filename();
