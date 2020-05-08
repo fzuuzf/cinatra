@@ -29,11 +29,17 @@ namespace cinatra {
 	template <typename SocketType>
 	class connection : public base_connection, public std::enable_shared_from_this<connection<SocketType>>, private noncopyable {
 	public:
-		explicit connection(boost::asio::io_service& io_service, ssl_configure ssl_conf, std::size_t max_req_size, long keep_alive_timeout,
-			http_handler& handler, std::string& static_dir, std::function<bool(request& req, response& res)>* upload_check):
-            socket_(io_service),
-			MAX_REQ_SIZE_(max_req_size), KEEP_ALIVE_TIMEOUT_(keep_alive_timeout),
-			timer_(io_service), http_handler_(handler), req_(res_), static_dir_(static_dir), upload_check_(upload_check)
+		explicit connection(boost::asio::io_service& io_service, ssl_configure ssl_conf, std::size_t max_req_size,
+							long keep_alive_timeout, http_handler& handler, std::string& static_dir,
+							std::function<bool(request& req, response& res)>* upload_check)
+			: socket_(io_service)
+			, timer_(io_service)
+			, req_(res_)
+			, MAX_REQ_SIZE_(max_req_size)
+			, KEEP_ALIVE_TIMEOUT_(keep_alive_timeout)
+			, static_dir_(static_dir)
+			, http_handler_(handler)
+			, upload_check_(upload_check)
 		{
             if constexpr(is_ssl_) {
                 init_ssl_context(std::move(ssl_conf));
