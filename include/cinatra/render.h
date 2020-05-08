@@ -231,7 +231,7 @@ public:
     }
 
 	inline std::string_view sv_str() {
-		size_t b = current_ - src_str_.begin();
+		//size_t b = current_ - src_str_.begin();
 		size_t e = (size_t)line_number_ + 20;
 		size_t len = e > src_str_.length() ? src_str_.length() : e;
 		return { src_str_.data()+(current_- src_str_.begin()), len };
@@ -805,14 +805,14 @@ static void to_render_data_impl(const nlohmann::json& json, Object&& render_data
 	}
 }
 
-static void to_render_data(const nlohmann::json& json, std::map<std::string, object>& render_map)
+inline void to_render_data(const nlohmann::json& json, std::map<std::string, object>& render_map)
 {
 	for (auto iter = json.begin(); iter != json.end(); ++iter) {
 		to_render_data_impl(iter.value(), render_map, iter.key());
 	}
 }
 
-static std::string render_file(const std::string& tpl_filepath, const nlohmann::json& data)
+inline std::string render_file(const std::string& tpl_filepath, const nlohmann::json& data)
 {
 	std::stringstream buff;
 	std::ifstream file(tpl_filepath);
@@ -827,7 +827,7 @@ static std::string render_file(const std::string& tpl_filepath, const nlohmann::
 	return result.str();
 }
 
-static std::string render_file(const std::string& tpl_filepath) {
+inline std::string render_file(const std::string& tpl_filepath) {
 	std::stringstream buff;
 	std::ifstream file(tpl_filepath);
 	if (!file.is_open()) {
@@ -837,7 +837,7 @@ static std::string render_file(const std::string& tpl_filepath) {
 	return buff.str();
 }
 
-static std::string render_string(const std::string& tpl_str, const nlohmann::json& data)
+inline std::string render_string(const std::string& tpl_str, const nlohmann::json& data)
 {
 	std::stringstream result;
 	std::map<std::string, object> render_map;
