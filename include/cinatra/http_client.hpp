@@ -223,7 +223,7 @@ namespace cinatra {
 
             std::error_code ec;
             size_t size = fs::file_size(filename, ec);
-            if (ec || start == -1) {
+            if (ec) {
                 file->close();
                 return error_code::filesize_error;
             }
@@ -593,7 +593,7 @@ namespace cinatra {
                         }
 
                         size_t size_to_read = content_len - read_buf_.size();
-                        if (parser_.total_len() > read_buf_.max_size()) {
+                        if ((unsigned)parser_.total_len() > read_buf_.max_size()) {
                             copy_headers();
                         }
                         do_read_body(parser_.keep_alive(), parser_.status(), size_to_read);
@@ -641,7 +641,7 @@ namespace cinatra {
             async_read_until(CRCF, [this, self = shared_from_this(), keep_alive](auto ec, size_t size) {
                 cancel_timer();
                 if (!ec) {
-                    size_t buf_size = read_buf_.size();
+                    //size_t buf_size = read_buf_.size();
                     const char* data_ptr = boost::asio::buffer_cast<const char*>(read_buf_.data());
                     std::string_view size_str(data_ptr, size - CRCF.size());
                     auto chunk_size = hex_to_int(size_str);
@@ -703,7 +703,7 @@ namespace cinatra {
                         return;
                     }
 
-                    size_t buf_size = read_buf_.size();
+                    //size_t buf_size = read_buf_.size();
                     const char* data_ptr = boost::asio::buffer_cast<const char*>(read_buf_.data());
                     append_chunk({ data_ptr, size - CRCF.size() });
                     read_buf_.consume(size);
@@ -897,7 +897,7 @@ namespace cinatra {
             }
 
             std::string content;
-            const size_t size = 3 * 1024 * 1024;
+            constexpr int64_t size = 3 * 1024 * 1024;
             content.resize(size);
             file.read(&content[0], size);
             int64_t read_len = (int64_t)file.gcount();
